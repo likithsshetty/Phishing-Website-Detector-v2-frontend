@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import Link from "next/link";
 
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export default function Login() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [error, setError] = useState("");
@@ -21,7 +23,7 @@ export default function Login() {
     const onSubmit = async (data) => {
         setError("");
         try {
-            const response = await axios.post("http://127.0.0.1:5000/api/v1/login", data);
+            const response = await axios.post(backendUrl+"/api/v1/login", data);
             localStorage.setItem("authToken", response.data.token);
             router.push("/");  // Redirect to home page after successful login
         } catch (err) {

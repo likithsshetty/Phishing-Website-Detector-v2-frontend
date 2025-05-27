@@ -25,6 +25,7 @@ export default function Home() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [profileImage, setProfileImage] = useState("");
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   const getToken = () => {
     const token = localStorage.getItem("authToken");
@@ -39,7 +40,7 @@ export default function Home() {
     if (!token) return;
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/v1/urls", {
+      const response = await fetch(backendUrl+"/api/v1/urls", {
         headers: { authToken: token },
       });
       if (!response.ok) {
@@ -61,7 +62,7 @@ export default function Home() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/v1/block-toggle",
+        backendUrl+"/api/v1/block-toggle",
         {
           method: "POST",
           headers: {
@@ -90,7 +91,7 @@ export default function Home() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/v1/delete-url",
+        backendUrl+"/api/v1/delete-url",
         {
           method: "POST",
           headers: {

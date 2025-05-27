@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:5000";
+
 export default function Navbar({ username, profileImage, email }) {
   const router = useRouter();
 
@@ -29,7 +31,7 @@ export default function Navbar({ username, profileImage, email }) {
     if (!token) return;
 
     try {
-      const res = await fetch("http://localhost:5000/api/v1/delete-account", {
+      const res = await fetch(backendUrl + "/api/v1/delete-account", {
         method: "POST",
         headers: {
           Authorization: token,
@@ -57,7 +59,7 @@ export default function Navbar({ username, profileImage, email }) {
 
     try {
       const res = await axios.post(
-        "http://127.0.0.1:5000/api/v1/check",
+        backendUrl +"/api/v1/check",
         { url },
         {
           headers: {
@@ -67,7 +69,8 @@ export default function Navbar({ username, profileImage, email }) {
           },
         }
       );
-      setCheckUrlStatus(res.data.safe ? "✅ Safe" : "⚠️ Unsafe");
+      setCheckUrlStatus(res.data.is_safe ? "✅ Safe" : "⚠️ Unsafe");
+      console.log("Check result:", res.data);
     } catch (err) {
       console.error("Check error:", err);
       if (err.response?.status === 401) {
@@ -90,7 +93,7 @@ export default function Navbar({ username, profileImage, email }) {
   return (
     <div className="navbar bg-base-100 shadow-md px-4">
       <div className="flex-1">
-        <span className="btn btn-ghost text-xl">Pish Detector</span>
+        <span className="btn btn-ghost text-xl">Phish Detector</span>
       </div>
 
       <div className="flex items-center gap-2">
@@ -102,7 +105,8 @@ export default function Navbar({ username, profileImage, email }) {
         </button>
 
         <a
-          href="https://chrome.google.com/webstore/detail/pish-detector/your-extension-id"
+          href="/extension.zip"
+          download
           target="_blank"
           className="btn btn-primary btn-sm"
         >

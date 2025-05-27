@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import Link from "next/link";
 
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+// Ensure the backend URL is set correctly
 export default function Register() {
     const { register, handleSubmit, formState: { errors }, watch } = useForm();
     const [error, setError] = useState("");
@@ -26,7 +28,7 @@ export default function Register() {
         }
 
         try {
-            await axios.post("http://127.0.0.1:5000/api/v1/register", data);
+            await axios.post(backendUrl + "/api/v1/register", data);
             router.push("/login");
         } catch (err) {
             setError(err.response?.data?.error || "Registration failed");
